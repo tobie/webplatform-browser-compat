@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Browser Compatibility Tables - Datamodel</title>
+    <meta charset='utf-8'>
+    <script src='http://www.w3.org/Tools/respec/respec-w3c-common' async class='remove'></script>
+    <script class='remove'>
+      var respecConfig = {
+          // specification status (e.g. WD, LCWD, NOTE, etc.). If in doubt use ED.
+          specStatus:           "unofficial"
+
+          , shortName:            "compat tables"
+
+          // editors, add as many as you like
+          // only "name" is required
+          , editors:  [
+              {
+                  name:       "Ronald Mansveld"
+              ,   url:        "http://docs.webplatform.org/wiki/User:Ronaldmansveld"
+              ,   mailto:     "ronald@ronaldmansveld.nl"
+              ,   company:    "WebPlatform.org"
+              ,   companyURL: "http://webplatform.org/"
+              }
+          ]
+      };
+    </script>
+  </head>
+  <body>
+    <section id='abstract'>
+      <p>
+        WebPlatform.org expressed the wish to incorporate compatibility tables on the website, and provide the compatibility data through an easy to use API.
+        The data for these tables will be collected from various websites. In order to streamline this process, a datamodel has to be drawn out to make the exchange of compatibility-data as easy as possible.
+      </p>
+    </section>
+    
+    <section id='sotd'>
+      <p>
+        This document is first and foremost intended for internal use within the WebPlatform.org organization, and the websites that will share their compatibility-data with WebPlatform.org.
+      </p>
+    </section>
+    
+    <section class="introductory">
+      <h2>Overview</h2>
+      <p>
+        In order to share data, it is important for the exchanging parties to agree on a datamodel to fit the data into. In order to create such a datamodel, several <a href="#datatypes"></a> will be introduced in this specification. The preferred format for the dataexchange, and thus the preferred format for the examples throughout this specification is [[JSON]]. However, propertynames for the Datatypes are chosen in such a way, that other formats like XML can be used as well.
+      </p>
+    </section>
+
+    <section id="conformance">
+    </section>
+
+    <section id="datatypes">
+      <h2>Datatypes</h2>
+      <p>All datatypes have a URI-field that points to a location on data.webplatform.org. If the URI is accessed through the HTTP-protocol, it will return a 301-status with a link to a webpage that contains more information, ie a spec of a feature. This way the URI's for the different models can stay the same, even though the URL's for specs etc. may change over time.
+      
+      <section>
+        <h2>Browser</h2>
+        <p>
+          Browsers are the UserAgents that have been tested. While most of the time a browser will be the UserAgent that people use to surf on the internet, like Internet Explorer, Google Chrome or Firefox, a browser may also be an embedded UserAgent. For instance a webbrowser that's embedded in a microwave. In the broadest sense this means that a browser is anything that is capable of displaying webpages.
+        </p>
+        <p>
+          Even though one might be tempted to remove the browser-dictionary completely, and just use the UA-string, this would impose problems for a number of browsers, especially mobile and embedded browsers, where different browsers use the same UA-string, or even one browser uses multiple UA-strings.
+        </p>
+        <dl title="dictionary Browser" class="idl">
+          <dt>DOMString uri</dt>
+          <dd>The uri where more information can be found</dd>
+          <dt>DOMString uastring</dt>
+          <dd>The UA-string for this browser</dd>
+          <dt>DOMString browser</dt>
+          <dd>The name for the browser</dd>
+          <dt>DOMString vendor</dt>
+          <dd>The vendor of the browser</dd>
+          <dt>DOMString version</dt>
+          <dd>The version of the browser</dd>
+          <dt>DOMString os</dt>
+          <dd>The OS the browser runs on (if applicable)</dd>
+          <dt>DOMString osversion</dt>
+          <dd>The version of the OS the browser runs on (if applicable)</dd>
+        </dl>
+        <pre class="example highlight">
+          {
+            "uri":"data.webplatform.org/browser/internet_explorer/9.0/windows/7",
+            "uastring":"Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)",
+            "browser":"Internet Explorer",
+            "vendor":"Microsoft",
+            "version":"9.0",
+            "os":"Windows",
+            "osversion":"7"
+          }
+        </pre>
+        <pre class="example highlight">
+          {
+            "uri":"data.webplatform.org/browser/google_chrome/30.0.1599.17/windows/8",
+            "uastring":"Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.17 Safari/537.36",
+            "browser":"Chrome",
+            "vendor":"Google",
+            "version":"30.0.1599.17",
+            "os":"Windows",
+            "osversion":"8"
+          }
+        </pre>
+      </section>
+
+      <section>
+        <h2>FeatureCategory</h2>
+        <p>
+          In order to be able to display high-overview statistics, all features will be grouped in categories and subcategories. Categories will be the highest level of grouping, for instance CSS or API.
+        </p>
+        <dl title="dictionary FeatureCategory" class="idl">
+          <dt>DOMString uri</dt>
+          <dd>The URI for this category</dd>
+          <dt>DOMString name</dt>
+          <dd>The name of this category</dd>
+        </dl>
+        <pre class="example highlight">
+          {
+            "uri":"data.webplatform.org/feature/css",
+            "name":"CSS"
+          }
+        </pre>
+        <pre class="example highlight">
+          {
+            "uri":"data.webplatform.org/feature/api",
+            "name":"API"
+          }
+        </pre>
+      </section>
+
+      <section>
+        <h2>FeatureSubCategory</h2>
+        <p>
+          Subcategories are groupings of features that are highly connected to each other, for instance CSS2.1 selectors, SVG SMIL animations or the Web Audio API.
+        </p>
+        <dl title="dictionary FeatureSubCategory" class="idl">
+          <dt>DOMString uri</dt>
+          <dd>The URI for this subCategory</dd>
+          <dt>DOMString category</dt>
+          <dd>The URI of the <a>FeatureCategory</a> this subCategory belongs to</dd>
+          <dt>DOMString name</dt>
+          <dd>The name of this subCategory</dd>
+        </dl>
+        <pre class="example highlight">
+          {
+            "uri":"data.webplatform.org/feature/css/flexbox",
+            "category":"data.webplatform.org/feature/css",
+            "name":"Flexbox"
+          }
+        </pre>
+        <pre class="example highlight">
+          {
+            "uri":"data.webplatform.org/feature/api/battery",
+            "category":"data.webplatform.org/feature/api",
+            "name":"Battery API"
+          }
+        </pre>
+      </section>
+
+      <section>
+        <h2>Feature</h2>
+        <p>
+          Features are the distinct capabalities of a browser that will be tested. These can for instance be the different CSS2.1 selectors. Each feature can have multiple tests to check for conformance with the spec.
+        </p>
+        <dl title="dictionary Feature" class="idl">
+          <dt>DOMString uri</dt>
+          <dd>The URI for this feature</dd>
+          <dt>DOMString name</dt>
+          <dd>The name of this feature</dd>
+          <dt>DOMString category</dt>
+          <dd>The UID of the <a>FeatureSubCategory</a> this feature belongs to</dd>
+          <dt>DOMString[] spec</dt>
+          <dd>The URLs of the specifications of this feature</dd>
+          <dt>DOMString othername</dt>
+          <dd>Another name this feature might be known with</dd>
+          <dt>float importance</dt>
+          <dd>A floating-point number, where 0 &lt; importance &lt;= 1, showing how important (relatively) a feature is considered compared to other features within the same <a>FeatureSubCategory</a></dd>
+        </dl>
+        <pre class="example highlight">
+          {
+            "uri":"data.webplatform.org/feature/api/battery/navigator.battery",
+            "name":"NavigatorBattery",
+            "category":"data.webplatform.org/feature/api/battery",
+            "spec":"http://www.w3.org/TR/battery-status/",
+            "othername":"",
+            "importance":.3
+          }
+        </pre>
+        <pre class="example highlight">
+          {
+            "uri":"data.webplatform.org/feature/api/battery/batterystatus",
+            "name":"BatteryManager",
+            "category":"data.webplatform.org/feature/api/battery",
+            "spec":"http://www.w3.org/TR/battery-status/",
+            "othername":"Batterystatus",
+            "importance":.8
+          }
+        </pre>
+      </section>
+
+      <section>
+        <h2>Testsource</h2>
+        <p>
+          The testsource is the entity that performed the test, and published the results. These can be sites such as html5test.com, caniuse.com or quirksmode.org.
+        </p>
+        <dl title="dictionary Testsource" class="idl">
+          <dt>DOMString uri</dt>
+          <dd>The URI for this testsource</dd>
+          <dt>DOMString name</dt>
+          <dd>The name of the testsource</dd>
+          <dt>DOMString url</dt>
+          <dd>URL for this testsource</dd>
+        </dl>
+        <pre class="example highlight">
+          {
+            "uri":"data.webplatform.org/testsource/html5test",
+            "name":"html5test",
+            "url":"http://www.html5test.com"
+          }
+        </pre>
+        <pre class="example highlight">
+          {
+            "uri":"data.webplatform.org/testsource/w3c",
+            "name":"w3c",
+            "url":"http://www.w3.org/Style/CSS/Test/Overview.en.html"
+          }
+        </pre>
+      </section>
+
+      <section>
+        <h2>Test</h2>
+        <p>
+          A test is a distinct testcase, testing (part of) a feature.
+        </p>
+        <dl title="dictionary Test" class="idl">
+          <dt>DOMString uri</dt>
+          <dd>The URI for this test</dd>
+          <dt>DOMString testsource</dt>
+          <dd>The URI for the <a>Testsource</a> of this test</dd>
+          <dt>DOMString name</dt>
+          <dd>The name of this test</dd>
+          <dt>DOMString feature</dt>
+          <dd>The URI for the <a>Feature</a> that is tested by this test</dd>
+          <dt>float importance</dt>
+          <dd>A floating-point number, where 0 &lt; importance &lt;= 1, showing how important (relatively) a test is considered compared to other tests by the same <a>Testsource</a> for the same <a>Feature</a></dd>
+          <dt>DOMString url</dt>
+          <dd>The URL where more information/documentation of this test can be found</dd>
+        </dl>
+        <pre class="example highlight">
+          {
+            "uri":"data.webplatform.org/test/w3c/counters-001",
+            "testsource":"docs.webplatform.org/testsource/w3c",
+            "name":"counters-001",
+            "feature":"data.webplatform.org/feature/css/css21/counter",
+            "importance":1
+            "url":"http://test.csswg.org/suites/css2.1/20110323/html4/chapter-4.html"
+          }
+        </pre>
+        <pre class="example highlight">
+          {
+            "uri":"data.webplatform.org/test/w3c/counters-002",
+            "testsource":"docs.webplatform.org/testsource/w3c",
+            "name":"counters-002",
+            "feature":"data.webplatform.org/feature/css/css21/counter",
+            "importance":1
+            "url":"http://test.csswg.org/suites/css2.1/20110323/html4/chapter-4.html"
+          }
+        </pre>
+      </section>
+
+      <section>
+        <h2>Result</h2>
+        <p>
+          In order to correctly identify the outcome of a test, it is necessary to normalize the testresults. Note that while testsources are free to maintain their own set of results, those results MUST be translated to one of these results.
+        </p>
+        <p>
+          The definition of a <a>TestResult</a> shows that an array of results is allowed. This is done so testsources can; besides a passed, partial or failed result; also designate whether the feature can only be used prefixed, and whether a polyfill is available.
+        </p>
+        <dl title="enum Result" class="idl">
+          <dt>passed</dt>
+          <dd>Signifies that the test was passed</dd>
+          <dt>partial</dt>
+          <dd>Signifies that the test only passed partial. Note that in case of partial passed tests, it is RECOMMENDED that the test is split up in different tests, so that each test will have a result that is either passed or fail. Also, with partial passed tests, the <a>Testsource</a> SHOULD include a note with the <a>TestResult</a> with further information.</dd>
+          <dt>failed</dt>
+          <dd>Signifies that the test has failed</dd>
+          <dt>not tested</dt>
+          <dd>Signifies that the feature was not tested. It is RECOMMENDED that the <a>Testsource</a> includes a note with the <a>TestResult</a> on why the test hasn't run.</dd>
+          <dt>polyfill</dt>
+          <dd>A polyfill is available to make this feature work in this browser. It is RECOMMENDED that the <a>Testsource</a> includes a note with the <a>TestResult</a> that links to the available polyfill(s)</dd>
+        </dl>
+      </section>
+
+      <section>
+        <h2>TestResult</h2>
+        <p>
+          TestResults are the most important part of the datamodel, since these connect a browser, a feature and a test together, and shows what the result of the test is.
+        </p>
+        <p>
+          While one would expect a test to have just a single <a>Result</a>, this definition allowes an array of results. This is done so testsources can also designate whether the feature can only be used prefixed, and whether a polyfill is available. However, the array of results MUST only contain exactly 1 (one) of 'passed', 'partial' or 'failed'. Both 'prefixed' and 'polyfill' are optional, and MAY be combined.
+        </p>
+        <p>
+          Notes are a free textfield where results can be clarified, or specific behaviour can be explained.
+        </p>
+        <dl title="dictionary TestResult" class="idl">
+          <dt>DOMString browser</dt>
+          <dd>The URI for the <a>Browser</a> this <a>Test</a> was run on</dd>
+          <dt>DOMString test</dt>
+          <dd>The <a>Test</a> that was run</dd>
+          <dt>Result[] result</dt>
+          <dd>The Results of this test</dd>
+          <dt>DOMString notes</dt>
+          <dd>Notes considering the testresults</dd>
+          <dt>DOMString? prefix</dt>
+          <dd>The prefix used to run this test</dd>
+        </dl>
+        <pre class="example highlight">
+          {
+            "browser":"data.webplatform.org/browser/internet_explorer/9.0/windows/7",
+            "test":"data.webplatform.org/test/w3c/counter-001",
+            "result":["passed"],
+            "notes":""
+          }
+        </pre>
+        <pre class="example highlight">
+          {
+            "browser":"data.webplatform.org/browser/opera/12.10/windows/8",
+            "test":"data.webplatform.org/test/html5test/scoped-style",
+            "result":["partial"],
+            "notes":"Implemented as readonly instead of full access.",
+            "prefix":"o"
+          }
+        </pre>
+      </section>
+
+      <section>
+        <h2>CompatibilityTable</h2>
+        <p>
+          The CompatibilityTable combines all the different testresults, and also contains all data referenced in the other types. When creating a compatibilitytable, the <a>Testsource</a>, in order to easy lookups throughout the table, SHOULD use the UUID of the respective element as the key in the array, if possible in the underlying format. In case of JSON this would mean that, instead of JSON-arrays, JSON-objects should be used.
+        </p>
+        <dl title="dictionary CompatibilityTable" class="idl">
+          <dt>Browser[] browsers</dt>
+          <dd>The browsers that are present in this table</dd>
+          <dt>FeatureCategory[] featurecategories</dt>
+          <dd>The categories the features present in this table belong to</dd>
+          <dt>FeatureSubCategory[] featuresubcategories</dt>
+          <dd>The subCategories the features present in this table belong to</dd>
+          <dt>Feature[] features</dt>
+          <dd>The features that are present in this table</dd>
+          <dt>Testsource[] sources</dt>
+          <dd>The sources that created these results</dd>
+          <dt>Test[] tests</dt>
+          <dd>The tests that have been performed to create this table</dd>
+          <dt>TestResult[] results</dt>
+          <dd>The results of the performed tests</dd>
+        </dl>
+        <pre class="example highlight">
+          {
+            "browsers":{
+              "data.webplatform.org/browser/internet_explorer/9.0/windows/7":{
+                "uri":"data.webplatform.org/browser/internet_explorer/9.0/windows/7",
+                "browser":"Internet Explorer",
+                "vendor":"Microsoft",
+                "version":"9.0",
+                "os":"windows",
+                "osversion":"7"
+              },
+              "data.webplatform.org/browser/opera/12.10/windows/8":{
+                "uri":"data.webplatform.org/browser/opera/12.10/windows/8",
+                "browser":"Opera"
+                "vendor":"Opera",
+                "version":"12.10",
+                "os":"windows",
+                "os-version":"8"
+              }
+            },
+            "featurecategories":{
+              "data.webplatform.org/feature/css":{
+                "uri":"data.webplatform.org/feature/css",
+                "name":"CSS"
+              },
+              "data.webplatform.org/feature/api":{
+                "uri":"data.webplatform.org/feature/api",
+                "name":"API"
+              }
+            },
+            "featuresubcategories":{
+              "data.webplatform.org/feature/css/flexbox":{
+                "uri":"data.webplatform.org/feature/css/flexbox",
+                "category":"data.webplatform.org/feature/css",
+                "name":"Flexbox"
+              },
+              "data.webplatform.org/feature/api/battery":{
+                "uri":"data.webplatform.org/feature/api/battery",
+                "category":"data.webplatform.org/feature/api",
+                "name":"Battery API"
+              }
+            },
+            "features":{
+              "data.webplatform.org/feature/api/battery/navigator.battery":{
+                "uri":"data.webplatform.org/feature/api/battery/navigator.battery",
+                "name":"NavigatorBattery",
+                "category":"data.webplatform.org/feature/api/battery",
+                "spec":"http://www.w3.org/TR/battery-status/",
+                "othername":"",
+                "importance":.3
+              },
+              "data.webplatform.org/feature/api/battery/batterystatus":{
+                "uri":"data.webplatform.org/feature/api/battery/batterystatus",
+                "name":"BatteryManager",
+                "category":"data.webplatform.org/feature/api/battery",
+                "spec":"http://www.w3.org/TR/battery-status/",
+                "othername":"Batterystatus",
+                "importance":.8
+              }
+            },
+            "sources":{
+              "data.webplatform.org/testsource/w3c":{
+                "uri":"data.webplatform.org/testsource/w3c",
+                "name":"w3c",
+                "url":"http://www.w3.org/Style/CSS/Test/Overview.en.html"
+              }
+            },
+            "tests":{
+              "data.webplatform.org/test/w3c/navigator.battery":{
+                "uri":"data.webplatform.org/test/w3c/navigator.battery",
+                "testsource":"data.webplatform.org/testsource/w3c",
+                "name":"navigator.battery",
+                "feature":"data.webplatform.org/feature/api/battery/navigator.battery",
+                "importance":1
+                "url":"http://test.csswg.org/suites/css2.1/20110323/html4/chapter-4.html"
+              },
+              "data.webplatform.org/test/w3c/batterymanager":{
+                "uri":"data.webplatform.org/test/w3c/batterymanager",
+                "testsource":"data.webplatform.org/testsource/w3c",
+                "name":"batterymanager",
+                "feature":"data.webplatform.org/feature/api/battery/batterymanager",
+                "importance":1
+                "url":"http://test.csswg.org/suites/css2.1/20110323/html4/chapter-4.html"
+              }
+            },
+            "results":[
+              {
+                "browser":"data.webplatform.org/browser/internet_explorer/9.0/windows/7",
+                "test":"data.webplatform.org/test/w3c/navigator.battery",
+                "result":["passed"],
+                "notes":""
+              },
+              {
+                "browser":"data.webplatform.org/browser/opera/12.10/windows/8",
+                "test":"data.webplatform.org/test/w3c/batterymanager",
+                "result":["partial"],
+                "notes":"Implemented as readonly instead of full access.",
+                "prefix":"o"
+              }
+            ]
+          }
+        </pre>
+      </section>
+    </section>
+    
+  </body>
+</html>
