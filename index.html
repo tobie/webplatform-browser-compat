@@ -133,6 +133,8 @@
             "name":"API"
           }
         </pre>
+        <p class=issue>I don't imagine webplatform.org doc sections will change without proper HTTP redirects. Why not link directly to them here?</p>
+        
       </section>
 
       <section>
@@ -140,6 +142,8 @@
         <p>
           Subcategories are groupings of features that are highly connected to each other, for instance CSS2.1 selectors, SVG SMIL animations or the Web Audio API.
         </p>
+        <p class=issue>Where so specs fit in that hierarchy?</p>
+        <p class=issue>Can subcategories be nested? If so why distinguish between categories and subcategories? A subcategory is just a category with a parent.</p>
         <dl title="dictionary FeatureSubCategory" class="idl">
           <dt>DOMString uri</dt>
           <dd>The URI for this subCategory</dd>
@@ -166,6 +170,7 @@
 
       <section>
         <h2>Feature</h2>
+        <p class=issue>Specs are organized in sections and sub-sections. How do feature match those?</p>
         <p>
           Features are the distinct capabalities of a browser that will be tested. These can for instance be the different CSS2.1 selectors. Each feature can have multiple tests to check for conformance with the spec.
         </p>
@@ -183,6 +188,7 @@
           <dt>float importance</dt>
           <dd>A floating-point number, where 0 &lt; importance &lt;= 1, showing how important (relatively) a feature is considered compared to other features within the same <a>FeatureSubCategory</a></dd>
         </dl>
+        <p class=issue>Importance of a feature is tied to a context. E.g. geo-location is critical for a maps application, not so much on a TV set. How are you planning to account for that?</p>
         <pre class="example highlight">
           {
             "uri":"http://data.webplatform.org/feature/api/battery/navigator.battery",
@@ -218,6 +224,7 @@
           <dt>DOMString url</dt>
           <dd>URL for this testsource</dd>
         </dl>
+        <p class=issue>TestResource URLs are unique here, no need to add a URI. Also, the distinction between URIs and URLs is tenuous.</p>
         <pre class="example highlight">
           {
             "uri":"http://data.webplatform.org/testsource/html5test",
@@ -253,6 +260,10 @@
           <dt>DOMString url</dt>
           <dd>The URL where more information/documentation of this test can be found</dd>
         </dl>
+        <p class=issue>W3C test files generally have multiple tests per files. Are you proposing that a testfile is a test? If so, how should we handle the name attribute for files which don;t have a title? Else how do you expect to be able to link tests directly?</p>
+        <p class=issue>Some test files test multiple features. So features will need to be an array.</p>
+        <p class=issue>There are thousands of W3C tests, all of which point to specs sections. How are you proposing to automate turning these links into links to features?</p>
+        <p class=issue>Relative test importance is not a criteria we're expecting to add to W3C tests. It's too subjective.</p>
         <pre class="example highlight">
           {
             "uri":"http://data.webplatform.org/test/w3c/counters-001",
@@ -347,6 +358,9 @@
         <p>
           The CompatibilityTable combines all the different testresults, and also contains all data referenced in the other types. When creating a compatibilitytable, the <a>Testsource</a>, in order to easy lookups throughout the table, SHOULD use the UUID of the respective element as the key in the array, if possible in the underlying format. In case of JSON this would mean that, instead of JSON-arrays, JSON-objects should be used.
         </p>
+        <p class=issue>Using identifiers as object keys implies that you risk having a discrepancy between the key of the object and the object's uid field. How to handle this discrepancy needs to be specified (or this proposal dropped in favor of using arrays).</p>
+        <p class=issue>For interoperability's sake the above SHOULD must be replaced by a MUST.</p>
+        <p class=issue>What is the use case for this data format?</p>
         <dl title="dictionary CompatibilityTable" class="idl">
           <dt>Browser[] browsers</dt>
           <dd>The browsers that are present in this table</dd>
