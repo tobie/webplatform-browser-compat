@@ -44,6 +44,7 @@
       <p>
         In order to share data, it is important for the exchanging parties to agree on a datamodel to fit the data into. In order to create such a datamodel, several <a href="#datatypes"></a> will be introduced in this specification. The preferred format for the dataexchange, and thus the preferred format for the examples throughout this specification is [[JSON]]. However, propertynames for the Datatypes are chosen in such a way, that other formats like XML can be used as well.
       </p>
+      <p class=issue>Either clarify statement about XML-compatible property names by referencing requirements on format or drop it altogether.</p>
     </section>
 
     <section id="conformance">
@@ -51,16 +52,22 @@
 
     <section id="datatypes">
       <h2>Datatypes</h2>
-      <p>All datatypes have a URI-field that points to a location on data.webplatform.org. If the URI is accessed through the HTTP-protocol, it will return a 301-status with a link to a webpage that contains more information, ie a spec of a feature. This way the URI's for the different models can stay the same, even though the URL's for specs etc. may change over time.
-      
+      <p>All datatypes have a URI-field that points to a location on data.webplatform.org. If the URI is accessed through the HTTP-protocol, it will return a 301-status with a link to a webpage that contains more information, ie a spec of a feature. This way the URI's for the different models can stay the same, even though the URL's for specs etc. may change over time.</p>
+      <p class=issue>Centralizing URIs on a single server has significant implementation costs. Who handles the server? Does the server have an API to automate the creation of URIs pairs? Who is going to implement this API and when will it be ready? Etc.</p>
       <section>
         <h2>Browser</h2>
         <p>
           Browsers are the UserAgents that have been tested. While most of the time a browser will be the UserAgent that people use to surf on the internet, like Internet Explorer, Google Chrome or Firefox, a browser may also be an embedded UserAgent. For instance a webbrowser that's embedded in a microwave. In the broadest sense this means that a browser is anything that is capable of displaying webpages.
         </p>
+        <p class=issue>Why not simply use the term User Agent here, which is the accepted term for what you are describing.</p>
+        
         <p>
           Even though one might be tempted to remove the browser-dictionary completely, and just use the UA-string, this would impose problems for a number of browsers, especially mobile and embedded browsers, where different browsers use the same UA-string, or even one browser uses multiple UA-strings.
         </p>
+        <p class=issue>Is the case of different browsers using the same UA string a theoretical possibility or an existing issue? If the latter, please provide links/examples.</p>
+        <p class=issue>If different browsers using the same UA string really exists. How do you handle those in the very common scenario of doing automated and remote testing (i.e. without direct access to the device)?</p>
+        <p class=issue>Identical browsers using different UA string is only a concern if they cannot be reconciled by the UA parser.</p>
+        <p class=issue>Using browser names (version string, etc) as identifier (or part of an URI) implies defining a list of browser, operating system and device names (else we'll find instances of e.g. "IE", "MSIE", "Internet Explorer"all over the place), and correspondence between these and all existing UA strings so that this process can be automated. This is basically replicating functionality already existing in UA parsers (e.g.: <a href="https://github.com/tobie/ua-parser/blob/master/regexes.yaml">ua-parser's regex file</a>).</p>
         <dl title="dictionary Browser" class="idl">
           <dt>DOMString uri</dt>
           <dd>The uri where more information can be found</dd>
@@ -77,6 +84,8 @@
           <dt>DOMString osversion</dt>
           <dd>The version of the OS the browser runs on (if applicable)</dd>
         </dl>
+        <p class=issue>The way to construct "uri" needs to be precisely defined. What happens when some of the info is not available? E.g. a missing OS or browser versions? etc.</p>
+        <p class=issue>This is missing fields for information on devices which is critical on mobile (e.g. GPU integration is device specific).</p>
         <pre class="example highlight">
           {
             "uri":"data.webplatform.org/browser/internet_explorer/9.0/windows/7",
@@ -268,6 +277,8 @@
 
       <section>
         <h2>Result</h2>
+        <p class=issue>Distinction between the Result and TestResult type is confusing. I suggest addding a status field to TestResult instead which accepts the following values: "success", "failure", "not run", "timeout" (and "partial" if you insist, but there's lot of issues with this).</p>
+        
         <p>
           In order to correctly identify the outcome of a test, it is necessary to normalize the testresults. Note that while testsources are free to maintain their own set of results, those results MUST be translated to one of these results.
         </p>
@@ -286,6 +297,7 @@
           <dt>polyfill</dt>
           <dd>A polyfill is available to make this feature work in this browser. It is RECOMMENDED that the <a>Testsource</a> includes a note with the <a>TestResult</a> that links to the available polyfill(s)</dd>
         </dl>
+        <p class=issue>Existence of a polyfill shouldn't be tied to a test result but to a feature.</p>
       </section>
 
       <section>
