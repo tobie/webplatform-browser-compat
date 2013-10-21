@@ -65,10 +65,12 @@
         <p>
           Even though one might be tempted to remove the browser-dictionary completely, and just use the UA-string, this would impose problems for a number of browsers, especially mobile and embedded browsers, where different browsers use the same UA-string, or even one browser uses multiple UA-strings.
         </p>
-        <p class="issue" data-number="7">Is the case of different browsers using the same UA string a theoretical possibility or an existing issue? If the latter, please provide links/examples.</p>
-        <p class="issue" data-number="27">If different browsers using the same UA string really exists. How do you handle those in the very common scenario of doing automated and remote testing (i.e. without direct access to the device)?</p>
-        <p class="issue" data-number="26">Identical browsers using different UA string is only a concern if they cannot be reconciled by the UA parser.</p>
-        <p class="issue" data-number="25">Using browser names (version string, etc) as identifier (or part of an URI) implies defining a list of browser, operating system and device names (else we'll find instances of e.g. "IE", "MSIE", "Internet Explorer"all over the place), and correspondence between these and all existing UA strings so that this process can be automated. This is basically replicating functionality already existing in UA parsers (e.g.: <a href="https://github.com/tobie/ua-parser/blob/master/regexes.yaml">ua-parser's regex file</a>).</p>
+        <p class="issue" data-number="7">Is the statement that sometimes different browsers use an identical UA string correct? If so provide links/examples.</p>
+        <p class="issue" data-number="27">If different browsers provenly use identical UA strings, how can we identify browsers remotely? This is a very common scenario when doing automated testing without direct access to the device.</p>
+        <p class="issue" data-number="26">Why are we proposing to guard against multiple UA string for the same browser? This is easily reconciled by a by a UA parser.</p>
+        <p class="issue" data-number="25">The specification needs to formally define names for operating systems, user agents and devices if it wants to avoid using UA strings as identifier.
+          
+          This list needs to be compatible with the output of an existing language-agnostic UA parser so that transforming UA strings into Browser datatypes can be automated. In the absence of such a list, each data set will end up using different names to identify the same browser (e.g. "IE", "MSIE", "Internet Explorer", etc.) which is generally painful to reconcile. I suggest agreeing on using the names output by a specific parser for this.</p>
         <dl title="dictionary Browser" class="idl">
           <dt>DOMString uri</dt>
           <dd>The uri where more information can be found</dd>
@@ -143,8 +145,8 @@
         <p>
           Subcategories are groupings of features that are highly connected to each other, for instance CSS2.1 selectors, SVG SMIL animations or the Web Audio API.
         </p>
-        <p class="issue" data-number="21">Where so specs fit in that hierarchy?</p>
-        <p class="issue" data-number="20">Can subcategories be nested? If so why distinguish between categories and subcategories? A subcategory is just a category with a parent.</p>
+        <p class="issue" data-number="21">Clarify how specs fit in the hierarchy of categories and subcategories.</p>
+        <p class="issue" data-number="20">Why distinguish between categories and subcategories? Instead, allow categories to be nested and subcategories just become categories with a parent.</p>
         <dl title="dictionary FeatureSubCategory" class="idl">
           <dt>DOMString uri</dt>
           <dd>The URI for this subCategory</dd>
@@ -171,7 +173,7 @@
 
       <section>
         <h2>Feature</h2>
-        <p class="issue" data-number="19">Specs are organized in sections and sub-sections. How do feature match those?</p>
+        <p class="issue" data-number="19">How do feature match the organization of specs in sections and subsections? This is important because W3C tests map those.</p>
         <p>
           Features are the distinct capabalities of a browser that will be tested. These can for instance be the different CSS2.1 selectors. Each feature can have multiple tests to check for conformance with the spec.
         </p>
@@ -189,7 +191,7 @@
           <dt>float importance</dt>
           <dd>A floating-point number, where 0 &lt; importance &lt;= 1, showing how important (relatively) a feature is considered compared to other features within the same <a>FeatureSubCategory</a></dd>
         </dl>
-        <p class="issue" data-number="18">Importance of a feature is tied to a context. E.g. geo-location is critical for a maps application, not so much on a TV set. How are you planning to account for that?</p>
+        <p class="issue" data-number="18">Estimating the importance of a feature is highly subjective. Importance of a feature is tied to the context. E.g. geo-location is critical for a maps application, not so much on a TV set. There's going to be ongoing disagreement about how this matters. I suggest dropping that property altogether. It is best implemented by third party building on the dataset for well scoped cases (e.g. mobile browser support for building 2D games).</p>
         <pre class="example highlight">
           {
             "uri":"http://data.webplatform.org/feature/api/battery/navigator.battery",
@@ -225,7 +227,7 @@
           <dt>DOMString url</dt>
           <dd>URL for this testsource</dd>
         </dl>
-        <p class="issue" data-number="17">TestResource URLs are unique here, no need to add a URI. Also, the distinction between URIs and URLs is tenuous.</p>
+        <p class="issue" data-number="17">URI for test resources is redundant given TestResource URLs are unique. Also, the distinction between URIs and URLs is tenuous and will confuse many.</p>
         <pre class="example highlight">
           {
             "uri":"http://data.webplatform.org/testsource/html5test",
