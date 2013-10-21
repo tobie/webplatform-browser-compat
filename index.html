@@ -362,8 +362,8 @@
           The CompatibilityTable combines all the different testresults, and also contains all data referenced in the other types. When creating a compatibilitytable, the <a>Testsource</a>, in order to easy lookups throughout the table, SHOULD use the UUID of the respective element as the key in the array, if possible in the underlying format. In case of JSON this would mean that, instead of JSON-arrays, JSON-objects should be used.
         </p>
         <p class="issue" data-number="10">Using identifiers as object keys implies that you risk having a discrepancy between the key of the object and the object's uid field. How to handle this discrepancy needs to be specified (or this proposal dropped in favor of using arrays).</p>
-        <p class="issue" data-number="9">For interoperability's sake the above SHOULD must be replaced by a MUST.</p>
-        <p class="issue" data-number="8">What is the use case for this data format?</p>
+        <p class="issue" data-number="9">The RFC 2119 SHOULD in CompatibilityTable section must be a MUST. Change the sentence: "the Testsource, in order to easy lookups throughout the table, SHOULD use the UUID of the respective element as the key in the array, if possible in the underlying format" to "the Testsource, in order to easy lookups throughout the table, MUST use the UUID of the respective element as the key in the array".</p>
+        <p class="issue" data-number="8">What is the use case for the CompatibilityTable data format? It seems this is an implementation detail of webplatform.org compat tables and doesn't need to be provided by Test resources not exposed as such by the API.</p>
         <dl title="dictionary CompatibilityTable" class="idl">
           <dt>Browser[] browsers</dt>
           <dd>The browsers that are present in this table</dd>
