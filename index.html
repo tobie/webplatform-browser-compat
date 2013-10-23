@@ -192,8 +192,6 @@
           <dd>The URLs of the specifications of this feature</dd>
           <dt>DOMString othername</dt>
           <dd>Another name this feature might be known with</dd>
-          <dt>float importance</dt>
-          <dd>A floating-point number, where 0 &lt; importance &lt;= 1, showing how important (relatively) a feature is considered compared to other features within the same <a>FeatureSubCategory</a></dd>
         </dl>
         <p class="issue" data-number="18">Estimating the importance of a feature is highly subjective. Importance of a feature is tied to the context. E.g. geo-location is critical for a maps application, not so much on a TV set. There's going to be ongoing disagreement about how this matters. I suggest dropping that property altogether. It is best implemented by third party building on the dataset for well scoped cases (e.g. mobile browser support for building 2D games).</p>
         <pre class="example highlight">
@@ -202,8 +200,7 @@
             "name":"NavigatorBattery",
             "category":"data.webplatform.org/feature/api/battery",
             "spec":"http://www.w3.org/TR/battery-status/",
-            "othername":"",
-            "importance":.3
+            "othername":""
           }
         </pre>
         <pre class="example highlight">
@@ -212,8 +209,7 @@
             "name":"BatteryManager",
             "category":"data.webplatform.org/feature/api/battery",
             "spec":"http://www.w3.org/TR/battery-status/",
-            "othername":"Batterystatus",
-            "importance":.8
+            "othername":"Batterystatus"
           }
         </pre>
       </section>
@@ -262,8 +258,6 @@
           <dd>The name of this test</dd>
           <dt>DOMString feature</dt>
           <dd>The URI for the <a>Feature</a> that is tested by this test</dd>
-          <dt>float importance</dt>
-          <dd>A floating-point number, where 0 &lt; importance &lt;= 1, showing how important (relatively) a test is considered compared to other tests by the same <a>Testsource</a> for the same <a>Feature</a></dd>
           <dt>DOMString url</dt>
           <dd>The URL where more information/documentation of this test can be found</dd>
         </dl>
@@ -277,7 +271,6 @@
             "testsource":"docs.webplatform.org/testsource/w3c",
             "name":"counters-001",
             "feature":"data.webplatform.org/feature/css/css21/counter",
-            "importance":1
             "url":"http://test.csswg.org/suites/css2.1/20110323/html4/chapter-4.html"
           }
         </pre>
@@ -287,7 +280,6 @@
             "testsource":"docs.webplatform.org/testsource/w3c",
             "name":"counters-002",
             "feature":"data.webplatform.org/feature/css/css21/counter",
-            "importance":1
             "url":"http://test.csswg.org/suites/css2.1/20110323/html4/chapter-4.html"
           }
         </pre>
@@ -428,16 +420,14 @@
                 "name":"NavigatorBattery",
                 "category":"data.webplatform.org/feature/api/battery",
                 "spec":"http://www.w3.org/TR/battery-status/",
-                "othername":"",
-                "importance":.3
+                "othername":""
               },
               "data.webplatform.org/feature/api/battery/batterystatus":{
                 "uri":"http://data.webplatform.org/feature/api/battery/batterystatus",
                 "name":"BatteryManager",
                 "category":"data.webplatform.org/feature/api/battery",
                 "spec":"http://www.w3.org/TR/battery-status/",
-                "othername":"Batterystatus",
-                "importance":.8
+                "othername":"Batterystatus"
               }
             },
             "sources":{
@@ -453,7 +443,6 @@
                 "testsource":"data.webplatform.org/testsource/w3c",
                 "name":"navigator.battery",
                 "feature":"data.webplatform.org/feature/api/battery/navigator.battery",
-                "importance":1
                 "url":"http://test.csswg.org/suites/css2.1/20110323/html4/chapter-4.html"
               },
               "data.webplatform.org/test/w3c/batterymanager":{
@@ -461,7 +450,6 @@
                 "testsource":"data.webplatform.org/testsource/w3c",
                 "name":"batterymanager",
                 "feature":"data.webplatform.org/feature/api/battery/batterymanager",
-                "importance":1
                 "url":"http://test.csswg.org/suites/css2.1/20110323/html4/chapter-4.html"
               }
             },
