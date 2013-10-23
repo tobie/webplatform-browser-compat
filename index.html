@@ -94,7 +94,6 @@
           <dd>The model of the device this user agent runs on (if applicable)</dd>
         </dl>
         <p class="issue" data-number="24">The way to construct browser URIs needs to be precisely defined. What happens when some of the info is not available? E.g. a missing OS or browser versions? etc.</p>
-        <p class="issue" data-number="23">The Browser data type is missing fields for device name, brand and model. These are critical on mobile where for example GPU integration is device specific.</p>
         <pre class="example highlight">
           {
             "uri":"http://data.webplatform.org/useragent/internet_explorer/9.0/windows/7",
@@ -172,7 +171,6 @@
         </pre>
         <p class="issue" data-number="22">Avoid data.webplatform.org proxy for doc sections. I don't imagine webplatform.org doc sections will change without proper HTTP redirects. The extra-level of indirection here isn't useful.</p>
         <p class="issue" data-number="21">Clarify how specs fit in the hierarchy of categories and subcategories.</p>
-        <p class="issue" data-number="20">Why distinguish between categories and subcategories? Instead, allow categories to be nested and subcategories just become categories with a parent.</p>
       </section>
 
       <section>
@@ -193,7 +191,6 @@
           <dt>DOMString othername</dt>
           <dd>Another name this feature might be known with</dd>
         </dl>
-        <p class="issue" data-number="18">Estimating the importance of a feature is highly subjective. Importance of a feature is tied to the context. E.g. geo-location is critical for a maps application, not so much on a TV set. There's going to be ongoing disagreement about how this matters. I suggest dropping that property altogether. It is best implemented by third party building on the dataset for well scoped cases (e.g. mobile browser support for building 2D games).</p>
         <pre class="example highlight">
           {
             "uri":"http://data.webplatform.org/feature/api/battery/navigator.battery",
@@ -225,7 +222,6 @@
           <dt>DOMString url</dt>
           <dd>URL for this testsource</dd>
         </dl>
-        <p class="issue" data-number="17">URI for test resources is redundant given TestResource URLs are unique. Also, the distinction between URIs and URLs is tenuous and will confuse many.</p>
         <pre class="example highlight">
           {
             "name":"html5test",
@@ -258,9 +254,7 @@
           <dd>The URL where more information/documentation of this test can be found</dd>
         </dl>
         <p class="issue" data-number="16">Clarify whether the Test data type refers to test cases or test files. Generally, script-based W3C tests have multiple tests per files. There are specific issues in either case. If we consider that a Test data-type is a test file, we're going to have to deal with the wide variety of breadth of a given test file which sometimes include thousands of tests. If on the other hand we consider each test separately, we'll have URI and linking challenges.</p>
-        <p class="issue" data-number="15">The Test object doesn't account for the fact that some tests sometimes test multiple features. The feature property probably needs to be an array.</p>
         <p class="issue" data-number="14">We need to address the relationship between features and spec sections. W3C tests link to specs sections. If we separate the notiosn of spec sections and features, how are we planning to convert links to spec sections into feature URIs?</p>
-        <p class="issue" data-number="13">Relative test importance is too subjective a criteria and should be discarded. At the very least this needs to be optional, as no W3C test has those this property nor is there a plan to add it in the future. There are probably unwanted side-effects of adding such a criteria. I recommend strongly against it.</p>
         <pre class="example highlight">
           {
             "uri":"http://data.webplatform.org/test/w3c/counters-001",
