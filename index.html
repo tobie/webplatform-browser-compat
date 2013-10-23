@@ -56,14 +56,14 @@
       <p>All datatypes have a URI-field that points to a location on data.webplatform.org. If the URI is accessed through the HTTP-protocol, it will return a 301-status with a link to a webpage that contains more information, ie a spec of a feature. This way the URI's for the different models can stay the same, even though the URL's for specs etc. may change over time.</p>
       <p class="issue" data-number="5">Centralizing URIs on a single server has significant implementation costs. Who handles the server? Does the server have an API to automate the creation of URIs pairs? Who is going to implement this API and when will it be ready? What if the server goes down? Etc.</p>
       <section>
-        <h2>Browser</h2>
+        <h2>UserAgent</h2>
         <p>
-          Browsers are the UserAgents that have been tested. While most of the time a browser will be the UserAgent that people use to surf on the internet, like Internet Explorer, Google Chrome or Firefox, a browser may also be an embedded UserAgent. For instance a webbrowser that's embedded in a microwave. In the broadest sense this means that a browser is anything that is capable of displaying webpages.
+          The UserAgent Dictionary gives the details on a specific UserAgent such as version, vendor, name, and environment data like operating system and, in case of mobile devices, the data for the device. Please note that a UserAgent can not only be a browser on a computer or mobile device, but also software that displays webpages on game-consoles, refridgerators or watches.
         </p>
         <p class="issue" data-number="6">Use term User Agent instead of Browser for the related data type. Simplify wording accordingly.</p>
         
         <p>
-          Even though one might be tempted to remove the browser-dictionary completely, and just use the UA-string, this would impose problems for a number of browsers, especially mobile and embedded browsers, where different browsers use the same UA-string, or even one browser uses multiple UA-strings.
+          Even though one might be tempted to remove the UserAgent-dictionary completely, and just use the UA-string, this would impose problems for a number of useragents, especially mobile and embedded useragents, where different useragents use the same UA-string, or even one useragent uses multiple UA-strings.
         </p>
         <p class="issue" data-number="7">Is the statement that sometimes different browsers use an identical UA string correct? If so provide links/examples.</p>
         <p class="issue" data-number="27">If different browsers provenly use identical UA strings, how can we identify browsers remotely? This is a very common scenario when doing automated testing without direct access to the device.</p>
@@ -71,29 +71,35 @@
         <p class="issue" data-number="25">The specification needs to formally define names for operating systems, user agents and devices if it wants to avoid using UA strings as identifier.
           
           This list needs to be compatible with the output of an existing language-agnostic UA parser so that transforming UA strings into Browser datatypes can be automated. In the absence of such a list, each data set will end up using different names to identify the same browser (e.g. "IE", "MSIE", "Internet Explorer", etc.) which is generally painful to reconcile. I suggest agreeing on using the names output by a specific parser for this.</p>
-        <dl title="dictionary Browser" class="idl">
+        <dl title="dictionary UserAgent" class="idl">
           <dt>DOMString uri</dt>
           <dd>The uri where more information can be found</dd>
           <dt>DOMString uastring</dt>
-          <dd>The UA-string for this browser</dd>
-          <dt>DOMString browser</dt>
-          <dd>The name for the browser</dd>
+          <dd>The UA-string for this user agent</dd>
+          <dt>DOMString name</dt>
+          <dd>The name for the user agent</dd>
           <dt>DOMString vendor</dt>
-          <dd>The vendor of the browser</dd>
+          <dd>The vendor of the user agent</dd>
           <dt>DOMString version</dt>
-          <dd>The version of the browser</dd>
-          <dt>DOMString os</dt>
-          <dd>The OS the browser runs on (if applicable)</dd>
-          <dt>DOMString osversion</dt>
-          <dd>The version of the OS the browser runs on (if applicable)</dd>
+          <dd>The version of the user agent</dd>
+          <dt>DOMString? os</dt>
+          <dd>The OS the user agent runs on (if applicable)</dd>
+          <dt>DOMString? osversion</dt>
+          <dd>The version of the OS the user agent runs on (if applicable)</dd>
+          <dt>DOMString? devicename</dt>
+          <dd>The name of the device this user agent runs on (if applicable)</dd>
+          <dt>DOMString? devicebrand</dt>
+          <dd>The brand of the device this user agent runs on (if applicable)</dd>
+          <dt>DOMString? devicemodel</dt>
+          <dd>The model of the device this user agent runs on (if applicable)</dd>
         </dl>
         <p class="issue" data-number="24">The way to construct browser URIs needs to be precisely defined. What happens when some of the info is not available? E.g. a missing OS or browser versions? etc.</p>
         <p class="issue" data-number="23">The Browser data type is missing fields for device name, brand and model. These are critical on mobile where for example GPU integration is device specific.</p>
         <pre class="example highlight">
           {
-            "uri":"http://data.webplatform.org/browser/internet_explorer/9.0/windows/7",
+            "uri":"http://data.webplatform.org/useragent/internet_explorer/9.0/windows/7",
             "uastring":"Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)",
-            "browser":"Internet Explorer",
+            "name":"Internet Explorer",
             "vendor":"Microsoft",
             "version":"9.0",
             "os":"Windows",
@@ -102,13 +108,25 @@
         </pre>
         <pre class="example highlight">
           {
-            "uri":"http://data.webplatform.org/browser/google_chrome/30.0.1599.17/windows/8",
+            "uri":"http://data.webplatform.org/useragent/google_chrome/30.0.1599.17/windows/8",
             "uastring":"Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.17 Safari/537.36",
-            "browser":"Chrome",
+            "name":"Chrome",
             "vendor":"Google",
             "version":"30.0.1599.17",
             "os":"Windows",
             "osversion":"8"
+          }
+        </pre>
+        <pre class="example highlight">
+          {
+            "uri":"http://data.webplatform.org/useragent/android/2.3.3/htc/desire/gri40",
+            "uastring":"Mozilla/5.0 (Linux; U; Android 2.3.3; de-de; HTC Desire Build/GRI40) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1",
+            "name":"Android",
+            "vendor":"Google",
+            "version":"2.3.3",
+            "devicename":"Desire",
+            "devicebrand":"HTC",
+            "devicemodel":"GRI40"
           }
         </pre>
       </section>
@@ -175,7 +193,7 @@
         <h2>Feature</h2>
         <p class="issue" data-number="19">How do feature match the organization of specs in sections and subsections? This is important because W3C tests map those.</p>
         <p>
-          Features are the distinct capabalities of a browser that will be tested. These can for instance be the different CSS2.1 selectors. Each feature can have multiple tests to check for conformance with the spec.
+          Features are the distinct capabalities of a user agent that will be tested. These can for instance be the different CSS2.1 selectors. Each feature can have multiple tests to check for conformance with the spec.
         </p>
         <dl title="dictionary Feature" class="idl">
           <dt>DOMString uri</dt>
@@ -309,7 +327,7 @@
           <dt>not tested</dt>
           <dd>Signifies that the feature was not tested. It is RECOMMENDED that the <a>Testsource</a> includes a note with the <a>TestResult</a> on why the test hasn't run.</dd>
           <dt>polyfill</dt>
-          <dd>A polyfill is available to make this feature work in this browser. It is RECOMMENDED that the <a>Testsource</a> includes a note with the <a>TestResult</a> that links to the available polyfill(s)</dd>
+          <dd>A polyfill is available to make this feature work in this user agent. It is RECOMMENDED that the <a>Testsource</a> includes a note with the <a>TestResult</a> that links to the available polyfill(s)</dd>
         </dl>
         <p class="issue" data-number="11">Existence of a polyfill shouldn't be tied to a test result but to a feature.</p>
       </section>
@@ -317,7 +335,7 @@
       <section>
         <h2>TestResult</h2>
         <p>
-          TestResults are the most important part of the datamodel, since these connect a browser, a feature and a test together, and shows what the result of the test is.
+          TestResults are the most important part of the datamodel, since these connect a user agent, a feature and a test together, and shows what the result of the test is.
         </p>
         <p>
           While one would expect a test to have just a single <a>Result</a>, this definition allowes an array of results. This is done so testsources can also designate whether the feature can only be used prefixed, and whether a polyfill is available. However, the array of results MUST only contain exactly 1 (one) of 'passed', 'partial' or 'failed'. Both 'prefixed' and 'polyfill' are optional, and MAY be combined.
@@ -326,8 +344,8 @@
           Notes are a free textfield where results can be clarified, or specific behaviour can be explained.
         </p>
         <dl title="dictionary TestResult" class="idl">
-          <dt>DOMString browser</dt>
-          <dd>The URI for the <a>Browser</a> this <a>Test</a> was run on</dd>
+          <dt>DOMString useragent</dt>
+          <dd>The URI for the <a>UserAgent</a> this <a>Test</a> was run on</dd>
           <dt>DOMString test</dt>
           <dd>The <a>Test</a> that was run</dd>
           <dt>Result[] result</dt>
@@ -339,7 +357,7 @@
         </dl>
         <pre class="example highlight">
           {
-            "browser":"data.webplatform.org/browser/internet_explorer/9.0/windows/7",
+            "useragent":"data.webplatform.org/useragent/internet_explorer/9.0/windows/7",
             "test":"data.webplatform.org/test/w3c/counter-001",
             "result":["passed"],
             "notes":""
@@ -347,7 +365,7 @@
         </pre>
         <pre class="example highlight">
           {
-            "browser":"data.webplatform.org/browser/opera/12.10/windows/8",
+            "useragent":"data.webplatform.org/useragent/opera/12.10/windows/8",
             "test":"data.webplatform.org/test/html5test/scoped-style",
             "result":["partial"],
             "notes":"Implemented as readonly instead of full access.",
@@ -365,8 +383,8 @@
         <p class="issue" data-number="9">The RFC 2119 SHOULD in CompatibilityTable section must be a MUST. Change the sentence: "the Testsource, in order to easy lookups throughout the table, SHOULD use the UUID of the respective element as the key in the array, if possible in the underlying format" to "the Testsource, in order to easy lookups throughout the table, MUST use the UUID of the respective element as the key in the array".</p>
         <p class="issue" data-number="8">What is the use case for the CompatibilityTable data format? It seems this is an implementation detail of webplatform.org compat tables and doesn't need to be provided by Test resources not exposed as such by the API.</p>
         <dl title="dictionary CompatibilityTable" class="idl">
-          <dt>Browser[] browsers</dt>
-          <dd>The browsers that are present in this table</dd>
+          <dt>UserAgent[] useragents</dt>
+          <dd>The user agents that are present in this table</dd>
           <dt>FeatureCategory[] featurecategories</dt>
           <dd>The categories the features present in this table belong to</dd>
           <dt>FeatureSubCategory[] featuresubcategories</dt>
@@ -382,18 +400,18 @@
         </dl>
         <pre class="example highlight">
           {
-            "browsers":{
-              "data.webplatform.org/browser/internet_explorer/9.0/windows/7":{
-                "uri":"http://data.webplatform.org/browser/internet_explorer/9.0/windows/7",
-                "browser":"Internet Explorer",
+            "useragents":{
+              "data.webplatform.org/useragent/internet_explorer/9.0/windows/7":{
+                "uri":"http://data.webplatform.org/useragent/internet_explorer/9.0/windows/7",
+                "name":"Internet Explorer",
                 "vendor":"Microsoft",
                 "version":"9.0",
                 "os":"windows",
                 "osversion":"7"
               },
-              "data.webplatform.org/browser/opera/12.10/windows/8":{
-                "uri":"http://data.webplatform.org/browser/opera/12.10/windows/8",
-                "browser":"Opera"
+              "data.webplatform.org/useragent/opera/12.10/windows/8":{
+                "uri":"http://data.webplatform.org/useragent/opera/12.10/windows/8",
+                "name":"Opera"
                 "vendor":"Opera",
                 "version":"12.10",
                 "os":"windows",
@@ -467,13 +485,13 @@
             },
             "results":[
               {
-                "browser":"data.webplatform.org/browser/internet_explorer/9.0/windows/7",
+                "useragent":"data.webplatform.org/useragent/internet_explorer/9.0/windows/7",
                 "test":"data.webplatform.org/test/w3c/navigator.battery",
                 "result":["passed"],
                 "notes":""
               },
               {
-                "browser":"data.webplatform.org/browser/opera/12.10/windows/8",
+                "useragent":"data.webplatform.org/useragent/opera/12.10/windows/8",
                 "test":"data.webplatform.org/test/w3c/batterymanager",
                 "result":["partial"],
                 "notes":"Implemented as readonly instead of full access.",
