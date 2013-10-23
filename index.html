@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Browser Compatibility Tables - Datamodel</title>
+    <title>Data model for User Agent Testing</title>
     <meta charset="utf-8" />
     <script src="http://www.w3.org/Tools/respec/respec-w3c-common" async="" class="remove"></script>
     <script class="remove">
@@ -9,482 +9,255 @@
           // specification status (e.g. WD, LCWD, NOTE, etc.). If in doubt use ED.
           specStatus:           "unofficial"
 
-          , shortName:            "compat tables"
+          , shortName:            "ua-testing-data-model"
 
           // editors, add as many as you like
           // only "name" is required
           , editors:  [
               {
-                  name:       "Ronald Mansveld"
-              ,   url:        "http://docs.webplatform.org/wiki/User:Ronaldmansveld"
-              ,   mailto:     "ronald@ronaldmansveld.nl"
-              ,   company:    "WebPlatform.org"
-              ,   companyURL: "http://webplatform.org/"
+                  name:       "Tobie Langel"
+              ,   mailto:     "tobie@w3.org"
+              ,   company:    "W3C"
+              ,   companyURL: "http://w3.org/"
               }
           ]
-          , issueBase: "https://github.com/ronaldmansveld/webplatform-browser-compat/issues/"
+          , format: "markdown"
       };
     </script>
   </head>
   <body>
-    <section id="abstract">
-      <p>
-        WebPlatform.org expressed the wish to incorporate compatibility tables on the website, and provide the compatibility data through an easy to use API.
-        The data for these tables will be collected from various websites. In order to streamline this process, a datamodel has to be drawn out to make the exchange of compatibility-data as easy as possible.
-      </p>
-    </section>
-    
-    <section id="sotd">
-      <p>
-        This document is first and foremost intended for internal use within the WebPlatform.org organization, and the websites that will share their compatibility-data with WebPlatform.org.
-      </p>
-    </section>
-    
-    <section class="introductory">
-      <h2>Overview</h2>
-      <p>
-        In order to share data, it is important for the exchanging parties to agree on a datamodel to fit the data into. In order to create such a datamodel, several <a href="#datatypes"></a> will be introduced in this specification. The preferred format for the dataexchange, and thus the preferred format for the examples throughout this specification is [[JSON]]. However, propertynames for the Datatypes are chosen in such a way, that other formats like XML can be used as well.
-      </p>
-      <p class="issue" data-number="4">Statement about XML-compatible property names needs clarification. We should either reference format requirements or drop it altogether.</p>
-    </section>
+<section id="abstract">
+  [WebPlatform.org](http://WebPlatform.org) expressed the wish to incorporate
+  compatibility tables on the website, and provide the compatibility data through
+  an easy to use API. [testthewebforward.org](http://testthewebforward.org) is
+  organizing a similar effort to expose the data it's going to collect through
+  running the [Web Platform W3C test suites](https://github.com/w3c/web-platform-tests).
+  Standardizing on a data model will help sync both of these efforts and allow
+  sourcing data from multiple other sources that would adopt this data exchange model.
+</section>
 
-    <section id="conformance">
-    </section>
+<section id="sotd">
+  This document is a counter proposal to Ronald Mansveld's
+  [original proposal](http://ronaldmansveld.github.io/webplatform-browser-compat/).
+</section>
 
-    <section id="datatypes">
-      <h2>Datatypes</h2>
-      <p>All datatypes have a URI-field that points to a location on data.webplatform.org. If the URI is accessed through the HTTP-protocol, it will return a 301-status with a link to a webpage that contains more information, ie a spec of a feature. This way the URI's for the different models can stay the same, even though the URL's for specs etc. may change over time.</p>
-      <p class="issue" data-number="5">Centralizing URIs on a single server has significant implementation costs. Who handles the server? Does the server have an API to automate the creation of URIs pairs? Who is going to implement this API and when will it be ready? What if the server goes down? Etc.</p>
-      <section>
-        <h2>Browser</h2>
-        <p>
-          Browsers are the UserAgents that have been tested. While most of the time a browser will be the UserAgent that people use to surf on the internet, like Internet Explorer, Google Chrome or Firefox, a browser may also be an embedded UserAgent. For instance a webbrowser that's embedded in a microwave. In the broadest sense this means that a browser is anything that is capable of displaying webpages.
-        </p>
-        <p class="issue" data-number="6">Use term User Agent instead of Browser for the related data type. Simplify wording accordingly.</p>
-        
-        <p>
-          Even though one might be tempted to remove the browser-dictionary completely, and just use the UA-string, this would impose problems for a number of browsers, especially mobile and embedded browsers, where different browsers use the same UA-string, or even one browser uses multiple UA-strings.
-        </p>
-        <p class="issue" data-number="7">Is the statement that sometimes different browsers use an identical UA string correct? If so provide links/examples.</p>
-        <p class="issue" data-number="27">If different browsers provenly use identical UA strings, how can we identify browsers remotely? This is a very common scenario when doing automated testing without direct access to the device.</p>
-        <p class="issue" data-number="26">Why are we proposing to guard against multiple UA string for the same browser? This is easily reconciled by a by a UA parser.</p>
-        <p class="issue" data-number="25">The specification needs to formally define names for operating systems, user agents and devices if it wants to avoid using UA strings as identifier.
-          
-          This list needs to be compatible with the output of an existing language-agnostic UA parser so that transforming UA strings into Browser datatypes can be automated. In the absence of such a list, each data set will end up using different names to identify the same browser (e.g. "IE", "MSIE", "Internet Explorer", etc.) which is generally painful to reconcile. I suggest agreeing on using the names output by a specific parser for this.</p>
-        <dl title="dictionary Browser" class="idl">
-          <dt>DOMString uri</dt>
-          <dd>The uri where more information can be found</dd>
-          <dt>DOMString uastring</dt>
-          <dd>The UA-string for this browser</dd>
-          <dt>DOMString browser</dt>
-          <dd>The name for the browser</dd>
-          <dt>DOMString vendor</dt>
-          <dd>The vendor of the browser</dd>
-          <dt>DOMString version</dt>
-          <dd>The version of the browser</dd>
-          <dt>DOMString os</dt>
-          <dd>The OS the browser runs on (if applicable)</dd>
-          <dt>DOMString osversion</dt>
-          <dd>The version of the OS the browser runs on (if applicable)</dd>
-        </dl>
-        <p class="issue" data-number="24">The way to construct browser URIs needs to be precisely defined. What happens when some of the info is not available? E.g. a missing OS or browser versions? etc.</p>
-        <p class="issue" data-number="23">The Browser data type is missing fields for device name, brand and model. These are critical on mobile where for example GPU integration is device specific.</p>
-        <pre class="example highlight">
-          {
-            "uri":"http://data.webplatform.org/browser/internet_explorer/9.0/windows/7",
-            "uastring":"Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)",
-            "browser":"Internet Explorer",
-            "vendor":"Microsoft",
-            "version":"9.0",
-            "os":"Windows",
-            "osversion":"7"
-          }
-        </pre>
-        <pre class="example highlight">
-          {
-            "uri":"http://data.webplatform.org/browser/google_chrome/30.0.1599.17/windows/8",
-            "uastring":"Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.17 Safari/537.36",
-            "browser":"Chrome",
-            "vendor":"Google",
-            "version":"30.0.1599.17",
-            "os":"Windows",
-            "osversion":"8"
-          }
-        </pre>
-      </section>
+<section id="introduction">
+  Defining a data model is tricky because different data sources have vastly
+  different types of data. Some of this data is very much factual. For example,
+  User Agent with UA string `uas` gets a score of `X` out of `Y` running the
+  test suite `T` for spec `S` on date `t0`. Let's call this raw data. While this
+  data is pretty much non-controversial, it is also not very valuable to the
+  end-developer. Interpreting this data to conclude that User Agent `A` supports
+  feature `F` is where the real value lies. Let's call this interpreted data.
+  
+  Ideally, we'd always be storing raw data. Unfortunately, that is not always
+  possible. The challenge therefore consists in devising data models and
+  transformation strategies which allow both raw and interpreted data to
+  co-exist and be used together.
+</section>
 
-      <section>
-        <h2>FeatureCategory</h2>
-        <p>
-          In order to be able to display high-overview statistics, all features will be grouped in categories and subcategories. Categories will be the highest level of grouping, for instance CSS or API.
-        </p>
-        <dl title="dictionary FeatureCategory" class="idl">
-          <dt>DOMString uri</dt>
-          <dd>The URI for this category</dd>
-          <dt>DOMString name</dt>
-          <dd>The name of this category</dd>
-        </dl>
-        <pre class="example highlight">
-          {
-            "uri":"http://data.webplatform.org/feature/css",
-            "name":"CSS"
-          }
-        </pre>
-        <pre class="example highlight">
-          {
-            "uri":"http://data.webplatform.org/feature/api",
-            "name":"API"
-          }
-        </pre>
-        <p class="issue" data-number="22">Avoid data.webplatform.org proxy for doc sections. I don't imagine webplatform.org doc sections will change without proper HTTP redirects. The extra-level of indirection here isn't useful.</p>
-        
-      </section>
+Format
+------
 
-      <section>
-        <h2>FeatureSubCategory</h2>
-        <p>
-          Subcategories are groupings of features that are highly connected to each other, for instance CSS2.1 selectors, SVG SMIL animations or the Web Audio API.
-        </p>
-        <p class="issue" data-number="21">Clarify how specs fit in the hierarchy of categories and subcategories.</p>
-        <p class="issue" data-number="20">Why distinguish between categories and subcategories? Instead, allow categories to be nested and subcategories just become categories with a parent.</p>
-        <dl title="dictionary FeatureSubCategory" class="idl">
-          <dt>DOMString uri</dt>
-          <dd>The URI for this subCategory</dd>
-          <dt>DOMString category</dt>
-          <dd>The URI of the <a>FeatureCategory</a> this subCategory belongs to</dd>
-          <dt>DOMString name</dt>
-          <dd>The name of this subCategory</dd>
-        </dl>
-        <pre class="example highlight">
-          {
-            "uri":"http://data.webplatform.org/feature/css/flexbox",
-            "category":"data.webplatform.org/feature/css",
-            "name":"Flexbox"
-          }
-        </pre>
-        <pre class="example highlight">
-          {
-            "uri":"http://data.webplatform.org/feature/api/battery",
-            "category":"data.webplatform.org/feature/api",
-            "name":"Battery API"
-          }
-        </pre>
-      </section>
+The data format is [[JSON]].
 
-      <section>
-        <h2>Feature</h2>
-        <p class="issue" data-number="19">How do feature match the organization of specs in sections and subsections? This is important because W3C tests map those.</p>
-        <p>
-          Features are the distinct capabalities of a browser that will be tested. These can for instance be the different CSS2.1 selectors. Each feature can have multiple tests to check for conformance with the spec.
-        </p>
-        <dl title="dictionary Feature" class="idl">
-          <dt>DOMString uri</dt>
-          <dd>The URI for this feature</dd>
-          <dt>DOMString name</dt>
-          <dd>The name of this feature</dd>
-          <dt>DOMString category</dt>
-          <dd>The UID of the <a>FeatureSubCategory</a> this feature belongs to</dd>
-          <dt>DOMString[] spec</dt>
-          <dd>The URLs of the specifications of this feature</dd>
-          <dt>DOMString othername</dt>
-          <dd>Another name this feature might be known with</dd>
-          <dt>float importance</dt>
-          <dd>A floating-point number, where 0 &lt; importance &lt;= 1, showing how important (relatively) a feature is considered compared to other features within the same <a>FeatureSubCategory</a></dd>
-        </dl>
-        <p class="issue" data-number="18">Estimating the importance of a feature is highly subjective. Importance of a feature is tied to the context. E.g. geo-location is critical for a maps application, not so much on a TV set. There's going to be ongoing disagreement about how this matters. I suggest dropping that property altogether. It is best implemented by third party building on the dataset for well scoped cases (e.g. mobile browser support for building 2D games).</p>
-        <pre class="example highlight">
-          {
-            "uri":"http://data.webplatform.org/feature/api/battery/navigator.battery",
-            "name":"NavigatorBattery",
-            "category":"data.webplatform.org/feature/api/battery",
-            "spec":"http://www.w3.org/TR/battery-status/",
-            "othername":"",
-            "importance":.3
-          }
-        </pre>
-        <pre class="example highlight">
-          {
-            "uri":"http://data.webplatform.org/feature/api/battery/batterystatus",
-            "name":"BatteryManager",
-            "category":"data.webplatform.org/feature/api/battery",
-            "spec":"http://www.w3.org/TR/battery-status/",
-            "othername":"Batterystatus",
-            "importance":.8
-          }
-        </pre>
-      </section>
+User Agent data models
+----------------------
 
-      <section>
-        <h2>Testsource</h2>
-        <p>
-          The testsource is the entity that performed the test, and published the results. These can be sites such as html5test.com, caniuse.com or quirksmode.org.
-        </p>
-        <dl title="dictionary Testsource" class="idl">
-          <dt>DOMString uri</dt>
-          <dd>The URI for this testsource</dd>
-          <dt>DOMString name</dt>
-          <dd>The name of the testsource</dd>
-          <dt>DOMString url</dt>
-          <dd>URL for this testsource</dd>
-        </dl>
-        <p class="issue" data-number="17">URI for test resources is redundant given TestResource URLs are unique. Also, the distinction between URIs and URLs is tenuous and will confuse many.</p>
-        <pre class="example highlight">
-          {
-            "uri":"http://data.webplatform.org/testsource/html5test",
-            "name":"html5test",
-            "url":"http://www.html5test.com"
-          }
-        </pre>
-        <pre class="example highlight">
-          {
-            "uri":"http://data.webplatform.org/testsource/w3c",
-            "name":"w3c",
-            "url":"http://www.w3.org/Style/CSS/Test/Overview.en.html"
-          }
-        </pre>
-      </section>
+### Reference User Agent Parser
 
-      <section>
-        <h2>Test</h2>
-        <p>
-          A test is a distinct testcase, testing (part of) a feature.
-        </p>
-        <dl title="dictionary Test" class="idl">
-          <dt>DOMString uri</dt>
-          <dd>The URI for this test</dd>
-          <dt>DOMString testsource</dt>
-          <dd>The URI for the <a>Testsource</a> of this test</dd>
-          <dt>DOMString name</dt>
-          <dd>The name of this test</dd>
-          <dt>DOMString feature</dt>
-          <dd>The URI for the <a>Feature</a> that is tested by this test</dd>
-          <dt>float importance</dt>
-          <dd>A floating-point number, where 0 &lt; importance &lt;= 1, showing how important (relatively) a test is considered compared to other tests by the same <a>Testsource</a> for the same <a>Feature</a></dd>
-          <dt>DOMString url</dt>
-          <dd>The URL where more information/documentation of this test can be found</dd>
-        </dl>
-        <p class="issue" data-number="16">Clarify whether the Test data type refers to test cases or test files. Generally, script-based W3C tests have multiple tests per files. There are specific issues in either case. If we consider that a Test data-type is a test file, we're going to have to deal with the wide variety of breadth of a given test file which sometimes include thousands of tests. If on the other hand we consider each test separately, we'll have URI and linking challenges.</p>
-        <p class="issue" data-number="15">The Test object doesn't account for the fact that some tests sometimes test multiple features. The feature property probably needs to be an array.</p>
-        <p class="issue" data-number="14">We need to address the relationship between features and spec sections. W3C tests link to specs sections. If we separate the notiosn of spec sections and features, how are we planning to convert links to spec sections into feature URIs?</p>
-        <p class="issue" data-number="13">Relative test importance is too subjective a criteria and should be discarded. At the very least this needs to be optional, as no W3C test has those this property nor is there a plan to add it in the future. There are probably unwanted side-effects of adding such a criteria. I recommend strongly against it.</p>
-        <pre class="example highlight">
-          {
-            "uri":"http://data.webplatform.org/test/w3c/counters-001",
-            "testsource":"docs.webplatform.org/testsource/w3c",
-            "name":"counters-001",
-            "feature":"data.webplatform.org/feature/css/css21/counter",
-            "importance":1
-            "url":"http://test.csswg.org/suites/css2.1/20110323/html4/chapter-4.html"
-          }
-        </pre>
-        <pre class="example highlight">
-          {
-            "uri":"http://data.webplatform.org/test/w3c/counters-002",
-            "testsource":"docs.webplatform.org/testsource/w3c",
-            "name":"counters-002",
-            "feature":"data.webplatform.org/feature/css/css21/counter",
-            "importance":1
-            "url":"http://test.csswg.org/suites/css2.1/20110323/html4/chapter-4.html"
-          }
-        </pre>
-      </section>
+Precisely identifying User Agents is a tricky business as camouflaging their true
+identity and impersonating others have been among User Agent's
+[earliest survival techniques](http://webaim.org/blog/user-agent-string-history/).
 
-      <section>
-        <h2>Result</h2>
-        <p class="issue" data-number="12">Distinction between the Result and TestResult type is confusing. I suggest adding a status field to TestResult instead which accepts the following values: "success", "failure", "not run", "timeout" (and "partial" if you insist, but there's lot of issues with this).</p>
-        
-        <p>
-          In order to correctly identify the outcome of a test, it is necessary to normalize the testresults. Note that while testsources are free to maintain their own set of results, those results MUST be translated to one of these results.
-        </p>
-        <p>
-          The definition of a <a>TestResult</a> shows that an array of results is allowed. This is done so testsources can; besides a passed, partial or failed result; also designate whether the feature can only be used prefixed, and whether a polyfill is available.
-        </p>
-        <dl title="enum Result" class="idl">
-          <dt>passed</dt>
-          <dd>Signifies that the test was passed</dd>
-          <dt>partial</dt>
-          <dd>Signifies that the test only passed partial. Note that in case of partial passed tests, it is RECOMMENDED that the test is split up in different tests, so that each test will have a result that is either passed or fail. Also, with partial passed tests, the <a>Testsource</a> SHOULD include a note with the <a>TestResult</a> with further information.</dd>
-          <dt>failed</dt>
-          <dd>Signifies that the test has failed</dd>
-          <dt>not tested</dt>
-          <dd>Signifies that the feature was not tested. It is RECOMMENDED that the <a>Testsource</a> includes a note with the <a>TestResult</a> on why the test hasn't run.</dd>
-          <dt>polyfill</dt>
-          <dd>A polyfill is available to make this feature work in this browser. It is RECOMMENDED that the <a>Testsource</a> includes a note with the <a>TestResult</a> that links to the available polyfill(s)</dd>
-        </dl>
-        <p class="issue" data-number="11">Existence of a polyfill shouldn't be tied to a test result but to a feature.</p>
-      </section>
+Despite it's flaws, User Agent String parsing remains the best technique to
+identify browsers for analytics or testing purposes.
 
-      <section>
-        <h2>TestResult</h2>
-        <p>
-          TestResults are the most important part of the datamodel, since these connect a browser, a feature and a test together, and shows what the result of the test is.
-        </p>
-        <p>
-          While one would expect a test to have just a single <a>Result</a>, this definition allowes an array of results. This is done so testsources can also designate whether the feature can only be used prefixed, and whether a polyfill is available. However, the array of results MUST only contain exactly 1 (one) of 'passed', 'partial' or 'failed'. Both 'prefixed' and 'polyfill' are optional, and MAY be combined.
-        </p>
-        <p>
-          Notes are a free textfield where results can be clarified, or specific behaviour can be explained.
-        </p>
-        <dl title="dictionary TestResult" class="idl">
-          <dt>DOMString browser</dt>
-          <dd>The URI for the <a>Browser</a> this <a>Test</a> was run on</dd>
-          <dt>DOMString test</dt>
-          <dd>The <a>Test</a> that was run</dd>
-          <dt>Result[] result</dt>
-          <dd>The Results of this test</dd>
-          <dt>DOMString notes</dt>
-          <dd>Notes considering the testresults</dd>
-          <dt>DOMString? prefix</dt>
-          <dd>The prefix used to run this test</dd>
-        </dl>
-        <pre class="example highlight">
-          {
-            "browser":"data.webplatform.org/browser/internet_explorer/9.0/windows/7",
-            "test":"data.webplatform.org/test/w3c/counter-001",
-            "result":["passed"],
-            "notes":""
-          }
-        </pre>
-        <pre class="example highlight">
-          {
-            "browser":"data.webplatform.org/browser/opera/12.10/windows/8",
-            "test":"data.webplatform.org/test/html5test/scoped-style",
-            "result":["partial"],
-            "notes":"Implemented as readonly instead of full access.",
-            "prefix":"o"
-          }
-        </pre>
-      </section>
+Properly parsing a User Agent string is a dirty job and not one that could be
+specified easily. With specifying a UA parsing algorithm out of the question, our
+second best bet is to standardize on <dfn>reference UA parser</dfn> that fits our licensing
+requirements and doesn't tie us to one programming language:
+[`ua-parser`](https://github.com/tobie/ua-parser), the open-source parser extracted
+from the [Browserscope](http://www.browserscope.org/) project. It has
+[liberal licensing](https://github.com/tobie/ua-parser#license) and is polyglot by
+nature: the core of the parser is a
+[list of regexes](https://github.com/tobie/ua-parser/blob/master/regexes.yaml) which
+can be used to implement the parser in any language that supports regular expressions
+and is able to consume [[YAML]] (disclaimer, the editor of this document is also `ua-parser`'s
+co-maintainer). Currently, implementations exist in: C#, D, Go, Haskell, Java,
+JavaScript (node.js), Perl, PHP, Pig, Python, and Ruby.
 
-      <section>
-        <h2>CompatibilityTable</h2>
-        <p>
-          The CompatibilityTable combines all the different testresults, and also contains all data referenced in the other types. When creating a compatibilitytable, the <a>Testsource</a>, in order to easy lookups throughout the table, SHOULD use the UUID of the respective element as the key in the array, if possible in the underlying format. In case of JSON this would mean that, instead of JSON-arrays, JSON-objects should be used.
-        </p>
-        <p class="issue" data-number="10">Using identifiers as object keys implies that you risk having a discrepancy between the key of the object and the object's uid field. How to handle this discrepancy needs to be specified (or this proposal dropped in favor of using arrays).</p>
-        <p class="issue" data-number="9">The RFC 2119 SHOULD in CompatibilityTable section must be a MUST. Change the sentence: "the Testsource, in order to easy lookups throughout the table, SHOULD use the UUID of the respective element as the key in the array, if possible in the underlying format" to "the Testsource, in order to easy lookups throughout the table, MUST use the UUID of the respective element as the key in the array".</p>
-        <p class="issue" data-number="8">What is the use case for the CompatibilityTable data format? It seems this is an implementation detail of webplatform.org compat tables and doesn't need to be provided by Test resources not exposed as such by the API.</p>
-        <dl title="dictionary CompatibilityTable" class="idl">
-          <dt>Browser[] browsers</dt>
-          <dd>The browsers that are present in this table</dd>
-          <dt>FeatureCategory[] featurecategories</dt>
-          <dd>The categories the features present in this table belong to</dd>
-          <dt>FeatureSubCategory[] featuresubcategories</dt>
-          <dd>The subCategories the features present in this table belong to</dd>
-          <dt>Feature[] features</dt>
-          <dd>The features that are present in this table</dd>
-          <dt>Testsource[] sources</dt>
-          <dd>The sources that created these results</dd>
-          <dt>Test[] tests</dt>
-          <dd>The tests that have been performed to create this table</dd>
-          <dt>TestResult[] results</dt>
-          <dd>The results of the performed tests</dd>
-        </dl>
-        <pre class="example highlight">
-          {
-            "browsers":{
-              "data.webplatform.org/browser/internet_explorer/9.0/windows/7":{
-                "uri":"http://data.webplatform.org/browser/internet_explorer/9.0/windows/7",
-                "browser":"Internet Explorer",
-                "vendor":"Microsoft",
-                "version":"9.0",
-                "os":"windows",
-                "osversion":"7"
-              },
-              "data.webplatform.org/browser/opera/12.10/windows/8":{
-                "uri":"http://data.webplatform.org/browser/opera/12.10/windows/8",
-                "browser":"Opera"
-                "vendor":"Opera",
-                "version":"12.10",
-                "os":"windows",
-                "os-version":"8"
-              }
-            },
-            "featurecategories":{
-              "data.webplatform.org/feature/css":{
-                "uri":"http://data.webplatform.org/feature/css",
-                "name":"CSS"
-              },
-              "data.webplatform.org/feature/api":{
-                "uri":"http://data.webplatform.org/feature/api",
-                "name":"API"
-              }
-            },
-            "featuresubcategories":{
-              "data.webplatform.org/feature/css/flexbox":{
-                "uri":"http://data.webplatform.org/feature/css/flexbox",
-                "category":"data.webplatform.org/feature/css",
-                "name":"Flexbox"
-              },
-              "data.webplatform.org/feature/api/battery":{
-                "uri":"http://data.webplatform.org/feature/api/battery",
-                "category":"data.webplatform.org/feature/api",
-                "name":"Battery API"
-              }
-            },
-            "features":{
-              "data.webplatform.org/feature/api/battery/navigator.battery":{
-                "uri":"http://data.webplatform.org/feature/api/battery/navigator.battery",
-                "name":"NavigatorBattery",
-                "category":"data.webplatform.org/feature/api/battery",
-                "spec":"http://www.w3.org/TR/battery-status/",
-                "othername":"",
-                "importance":.3
-              },
-              "data.webplatform.org/feature/api/battery/batterystatus":{
-                "uri":"http://data.webplatform.org/feature/api/battery/batterystatus",
-                "name":"BatteryManager",
-                "category":"data.webplatform.org/feature/api/battery",
-                "spec":"http://www.w3.org/TR/battery-status/",
-                "othername":"Batterystatus",
-                "importance":.8
-              }
-            },
-            "sources":{
-              "data.webplatform.org/testsource/w3c":{
-                "uri":"http://data.webplatform.org/testsource/w3c",
-                "name":"w3c",
-                "url":"http://www.w3.org/Style/CSS/Test/Overview.en.html"
-              }
-            },
-            "tests":{
-              "data.webplatform.org/test/w3c/navigator.battery":{
-                "uri":"http://data.webplatform.org/test/w3c/navigator.battery",
-                "testsource":"data.webplatform.org/testsource/w3c",
-                "name":"navigator.battery",
-                "feature":"data.webplatform.org/feature/api/battery/navigator.battery",
-                "importance":1
-                "url":"http://test.csswg.org/suites/css2.1/20110323/html4/chapter-4.html"
-              },
-              "data.webplatform.org/test/w3c/batterymanager":{
-                "uri":"http://data.webplatform.org/test/w3c/batterymanager",
-                "testsource":"data.webplatform.org/testsource/w3c",
-                "name":"batterymanager",
-                "feature":"data.webplatform.org/feature/api/battery/batterymanager",
-                "importance":1
-                "url":"http://test.csswg.org/suites/css2.1/20110323/html4/chapter-4.html"
-              }
-            },
-            "results":[
-              {
-                "browser":"data.webplatform.org/browser/internet_explorer/9.0/windows/7",
-                "test":"data.webplatform.org/test/w3c/navigator.battery",
-                "result":["passed"],
-                "notes":""
-              },
-              {
-                "browser":"data.webplatform.org/browser/opera/12.10/windows/8",
-                "test":"data.webplatform.org/test/w3c/batterymanager",
-                "result":["partial"],
-                "notes":"Implemented as readonly instead of full access.",
-                "prefix":"o"
-              }
-            ]
-          }
-        </pre>
-      </section>
-    </section>
-    
+### Incomplete Version Strings in <a>UserAgentInfo</a> and <a>OperatingSystemInfo</a>
+
+<p class="issue">How do we handle incomplete version strings?
+  
+Consider `uainfo`,  an instance of <a>UserAgentInfo</a>. Its `family` attribute is `"Foo"`;
+its `major` attribute, `"8"`; and its `minor` and `patch` attributes are both `null`. For
+the sake of argument, imagine we represent this User Agent as the string "Foo 8".
+Now consider `Feature` `f` which is determined to be supported by "Foo 8.1", but not by
+"Foo 8.0". Do we consider it is supported by "Foo 8" or not?</p>
+
+### The `UserAgent` object
+
+The <a>UserAgentInfo</a>, <a>OperatingSystemInfo</a> and <a>DeviceInfo</a> objects
+are usually obtained programmatically by parsing a User Agent string using the
+<a>reference UA parser</a>. However, these objects can also be manually authored.
+In such cases, their `family`, `brand` and `model` attributes MUST be a possible
+output value of the <a>reference UA parser</a> in order for the data set to be
+interoperable. So for example, if the <a>reference UA parser</a> identifies
+Internet Explorer's family as as `"IE"`, a manually authored <a>UserAgentInfo</a>
+object which would identify it as `"MSIE"` would **not** conform.
+
+<p class="issue">
+  A list of possible values for the <a>UserAgentInfo</a>, <a>OperatingSystemInfo</a>
+  and <a>DeviceInfo</a> `family`, `brand` and `model` attributes must be
+  reverse-engineered from the <a>reference UA parser</a> and maintained.
+</p>
+
+<dl title="dictionary UserAgent" class="idl">
+  <dt>DOMString? userAgentString</dt>
+  <dd>The User Agent String.</dd>
+  <dt>UserAgentInfo ua</dt>
+  <dd>Details of the User Agent's family and version number</dd>
+  <dt>OperatingSystemInfo os</dt>
+  <dd>Details of the Operating System the User Agent is running on</dd>
+  <dt>DeviceInfo device</dt>
+  <dd>Details of the Device the User Agent is running on</dd>
+</dl>
+
+<pre class="example highlight">
+{
+    "userAgentString": "Mozilla/5.0 (Linux; Android 4.1.1; SPH-L710 Build/JRO03L) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19",
+    "ua": {
+        "family": "Chrome Mobile",
+        "major": "18",
+        "minor": "0",
+        "patch": "1025"
+    },
+    "os": {
+        "family": "Android",
+        "major": "4",
+        "minor": "1",
+        "patch": "1",
+        "patchMinor": null
+    },
+    "device": {
+        "brand": "Samsung",
+        "family": "Galaxy",
+        "model": "S3"
+    }
+}
+</pre>
+
+### The <a>UserAgentInfo</a> object
+
+If the value of the `family` attribute is `"Other"`, the value of the `major, `minor` and `patch` attributes MUST be `null`.
+
+If the value of the `major` attribute is `null`, the value of the `minor` and `patch` attributes MUST be `null`.
+
+If the value of the `minor` attribute is `null`, the value of the `patch` attribute MUST be `null`.
+
+<dl title="dictionary UserAgentInfo" class="idl">
+  <dt>DOMString family = "Other"</dt>
+  <dd>The name of the User Agent</dd>
+  <dt>DOMString? major</dt>
+  <dd>The version sequence's major number</dd>
+  <dt>DOMString? minor</dt>
+  <dd>The version sequence's minor number</dd>
+  <dt>DOMString? patch</dt>
+  <dd>The version sequence's patch number</dd>
+</dl>
+
+### The <a>OperatingSystemInfo</a> object
+
+If the value of the `family` attribute is `"Other"`, the value of the `major, `minor`, `patch` and `minorPatch` attributes MUST be `null`.
+
+If the value of the `major` attribute is `null`, the value of the `minor`, `patch` and `minorPatch` attributes MUST be `null`.
+
+If the value of the `major` attribute is `null`, the value of the `minor`, `patch` and `minorPatch` attributes MUST be `null`.
+
+If the value of the `minor` attribute is `null`, the value of the `patch` and `minorPatch` attributes MUST be `null`.
+
+If the value of the `patch` attribute is `null`, the value of the `minorPatch` attribute MUST be `null`.
+
+<dl title="dictionary OperatingSystemInfo" class="idl">
+  <dt>DOMString family = "Other"</dt>
+  <dd>The name of the Operating System</dd>
+  <dt>DOMString? major</dt>
+  <dd>The version sequence's major number</dd>
+  <dt>DOMString? minor</dt>
+  <dd>The version sequence's minor number</dd>
+  <dt>DOMString? patch</dt>
+  <dd>The version sequence's patch number</dd>
+  <dt>DOMString? minorPatch</dt>
+  <dd>The version sequence's minor patch number</dd>
+</dl>
+
+### The <a>DeviceInfo</a> object
+
+If the value of the `family` attribute is `"Other"`, the value of the `model` attribute MUST be `null`.
+
+
+<dl title="dictionary DeviceInfo" class="idl">
+  <dt>DOMString? brand</dt>
+  <dd>The device's brand</dd>
+  <dt>DOMString family = "Other"</dt>
+  <dd>The device's family</dd>
+  <dt>DOMString? model</dt>
+  <dd>The device's model</dd>
+</dl>
+
+Features
+--------
+
+Features are an abstraction that map to specs, their sections or subsections.
+
+### The <a>Feature</a> object
+
+<dl title="dictionary Feature" class="idl">
+  <dt>DOMString url</dt>
+  <dd>The link to this feature's related spec or spec section/subsection</dd>
+  <dt>DOMString name</dt>
+  <dd>The name of this feature</dd>
+</dl>
+
+<pre class="example highlight">
+  {
+    "url":"http://www.w3.org/TR/IndexedDB/",
+    "name":"IndexedDB"
+  }
+</pre>
+
+<pre class="example highlight">
+  {
+    "url":"http://www.w3.org/TR/html5/embedded-content-0.html#attr-iframe-seamless",
+    "name":"Seamless iframes"
+  }
+</pre>
+
+### The <a>SupportLevel</a> Enum
+
+<dl title="enum SupportLevel" class="idl">
+  <dt>full</dt>
+  <dd>The <a>Feature</a> is fully supported on that <a>UserAgent</a></dd>
+  <dt>partial</dt>
+  <dd>The <a>Feature</a> is partially supported on that <a>UserAgent</a></dd>
+  <dt>none</dt>
+  <dd>The <a>Feature</a> is not supported on that <a>UserAgent</a></dd>
+  <dt>polyfilled</dt>
+  <dd>The <a>Feature</a> is only supported on that <a>UserAgent</a> when polyfilled</dd>
+</dl>
+
+### The <a>FeatureSupport</a> object
+
+<dl title="dictionary FeatureSupport" class="idl">
+  <dt>Feature feature</dt>
+  <dd>The corresponding <a>Feature</a> object</dd>
+  <dt>UserAgent userAgent</dt>
+  <dd>The corresponding <a>UserAgent</a> object</dd>
+  <dt>SupportLevel supportLevel</dt>
+  <dd>The level of support for this `feature` on that `userAgent`.</dd>
+</dl>
   </body>
 </html>
 
