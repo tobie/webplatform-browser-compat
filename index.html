@@ -134,13 +134,15 @@
       <section>
         <h2>FeatureCategory</h2>
         <p>
-          In order to be able to display high-overview statistics, all features will be grouped in categories and subcategories. Categories will be the highest level of grouping, for instance CSS or API.
+          In order to be able to display high-overview statistics, all features will be grouped in categories. By grouping features in categories, one can easily determine how much of a spec has been implemented in a specific useragent. For instance: HTML5 forms have several new input-types such as color, date, number, etc. By grouping these features in a HTML5-forms category, it is easily discernible if (and how much) of HTML5-forms is implemented.
         </p>
         <dl title="dictionary FeatureCategory" class="idl">
           <dt>DOMString uri</dt>
           <dd>The URI for this category</dd>
           <dt>DOMString name</dt>
           <dd>The name of this category</dd>
+          <dt>DOMString? parent</dt>
+          <dd>The parent-category of this category</dd>
         </dl>
         <pre class="example highlight">
           {
@@ -154,39 +156,23 @@
             "name":"API"
           }
         </pre>
-        <p class="issue" data-number="22">Avoid data.webplatform.org proxy for doc sections. I don't imagine webplatform.org doc sections will change without proper HTTP redirects. The extra-level of indirection here isn't useful.</p>
-        
-      </section>
-
-      <section>
-        <h2>FeatureSubCategory</h2>
-        <p>
-          Subcategories are groupings of features that are highly connected to each other, for instance CSS2.1 selectors, SVG SMIL animations or the Web Audio API.
-        </p>
-        <p class="issue" data-number="21">Clarify how specs fit in the hierarchy of categories and subcategories.</p>
-        <p class="issue" data-number="20">Why distinguish between categories and subcategories? Instead, allow categories to be nested and subcategories just become categories with a parent.</p>
-        <dl title="dictionary FeatureSubCategory" class="idl">
-          <dt>DOMString uri</dt>
-          <dd>The URI for this subCategory</dd>
-          <dt>DOMString category</dt>
-          <dd>The URI of the <a>FeatureCategory</a> this subCategory belongs to</dd>
-          <dt>DOMString name</dt>
-          <dd>The name of this subCategory</dd>
-        </dl>
         <pre class="example highlight">
           {
             "uri":"http://data.webplatform.org/feature/css/flexbox",
-            "category":"data.webplatform.org/feature/css",
+            "parent":"data.webplatform.org/feature/css",
             "name":"Flexbox"
           }
         </pre>
         <pre class="example highlight">
           {
             "uri":"http://data.webplatform.org/feature/api/battery",
-            "category":"data.webplatform.org/feature/api",
+            "parent":"data.webplatform.org/feature/api",
             "name":"Battery API"
           }
         </pre>
+        <p class="issue" data-number="22">Avoid data.webplatform.org proxy for doc sections. I don't imagine webplatform.org doc sections will change without proper HTTP redirects. The extra-level of indirection here isn't useful.</p>
+        <p class="issue" data-number="21">Clarify how specs fit in the hierarchy of categories and subcategories.</p>
+        <p class="issue" data-number="20">Why distinguish between categories and subcategories? Instead, allow categories to be nested and subcategories just become categories with a parent.</p>
       </section>
 
       <section>
@@ -201,7 +187,7 @@
           <dt>DOMString name</dt>
           <dd>The name of this feature</dd>
           <dt>DOMString category</dt>
-          <dd>The UID of the <a>FeatureSubCategory</a> this feature belongs to</dd>
+          <dd>The UID of the <a>FeatureCategory</a> this feature belongs to</dd>
           <dt>DOMString[] spec</dt>
           <dd>The URLs of the specifications of this feature</dd>
           <dt>DOMString othername</dt>
@@ -387,8 +373,6 @@
           <dd>The user agents that are present in this table</dd>
           <dt>FeatureCategory[] featurecategories</dt>
           <dd>The categories the features present in this table belong to</dd>
-          <dt>FeatureSubCategory[] featuresubcategories</dt>
-          <dd>The subCategories the features present in this table belong to</dd>
           <dt>Feature[] features</dt>
           <dd>The features that are present in this table</dd>
           <dt>Testsource[] sources</dt>
@@ -427,8 +411,6 @@
                 "uri":"http://data.webplatform.org/feature/api",
                 "name":"API"
               }
-            },
-            "featuresubcategories":{
               "data.webplatform.org/feature/css/flexbox":{
                 "uri":"http://data.webplatform.org/feature/css/flexbox",
                 "category":"data.webplatform.org/feature/css",
