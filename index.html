@@ -217,11 +217,9 @@
       <section>
         <h2>Testsource</h2>
         <p>
-          The testsource is the entity that performed the test, and published the results. These can be sites such as html5test.com, caniuse.com or quirksmode.org.
+          The testsource is the entity that performed the test, and published the results. These can be sites such as html5test.com, caniuse.com or quirksmode.org. The URL-field is used in the same way URI-fields are used with other Dictionaries.
         </p>
         <dl title="dictionary Testsource" class="idl">
-          <dt>DOMString uri</dt>
-          <dd>The URI for this testsource</dd>
           <dt>DOMString name</dt>
           <dd>The name of the testsource</dd>
           <dt>DOMString url</dt>
@@ -230,14 +228,12 @@
         <p class="issue" data-number="17">URI for test resources is redundant given TestResource URLs are unique. Also, the distinction between URIs and URLs is tenuous and will confuse many.</p>
         <pre class="example highlight">
           {
-            "uri":"http://data.webplatform.org/testsource/html5test",
             "name":"html5test",
             "url":"http://www.html5test.com"
           }
         </pre>
         <pre class="example highlight">
           {
-            "uri":"http://data.webplatform.org/testsource/w3c",
             "name":"w3c",
             "url":"http://www.w3.org/Style/CSS/Test/Overview.en.html"
           }
@@ -253,7 +249,7 @@
           <dt>DOMString uri</dt>
           <dd>The URI for this test</dd>
           <dt>DOMString testsource</dt>
-          <dd>The URI for the <a>Testsource</a> of this test</dd>
+          <dd>The URL for the <a>Testsource</a> of this test</dd>
           <dt>DOMString name</dt>
           <dd>The name of this test</dd>
           <dt>DOMString feature</dt>
@@ -268,7 +264,7 @@
         <pre class="example highlight">
           {
             "uri":"http://data.webplatform.org/test/w3c/counters-001",
-            "testsource":"docs.webplatform.org/testsource/w3c",
+            "testsource":"http://www.w3.org/Style/CSS/Test/Overview.en.html",
             "name":"counters-001",
             "feature":"data.webplatform.org/feature/css/css21/counter",
             "url":"http://test.csswg.org/suites/css2.1/20110323/html4/chapter-4.html"
@@ -277,7 +273,7 @@
         <pre class="example highlight">
           {
             "uri":"http://data.webplatform.org/test/w3c/counters-002",
-            "testsource":"docs.webplatform.org/testsource/w3c",
+            "testsource":"http://www.w3.org/Style/CSS/Test/Overview.en.html",
             "name":"counters-002",
             "feature":"data.webplatform.org/feature/css/css21/counter",
             "url":"http://test.csswg.org/suites/css2.1/20110323/html4/chapter-4.html"
@@ -431,8 +427,7 @@
               }
             },
             "sources":{
-              "data.webplatform.org/testsource/w3c":{
-                "uri":"http://data.webplatform.org/testsource/w3c",
+              "http://www.w3.org/Style/CSS/Test/Overview.en.html":{
                 "name":"w3c",
                 "url":"http://www.w3.org/Style/CSS/Test/Overview.en.html"
               }
@@ -440,14 +435,14 @@
             "tests":{
               "data.webplatform.org/test/w3c/navigator.battery":{
                 "uri":"http://data.webplatform.org/test/w3c/navigator.battery",
-                "testsource":"data.webplatform.org/testsource/w3c",
+                "testsource":"http://www.w3.org/Style/CSS/Test/Overview.en.html",
                 "name":"navigator.battery",
                 "feature":"data.webplatform.org/feature/api/battery/navigator.battery",
                 "url":"http://test.csswg.org/suites/css2.1/20110323/html4/chapter-4.html"
               },
               "data.webplatform.org/test/w3c/batterymanager":{
                 "uri":"http://data.webplatform.org/test/w3c/batterymanager",
-                "testsource":"data.webplatform.org/testsource/w3c",
+                "testsource":"http://www.w3.org/Style/CSS/Test/Overview.en.html",
                 "name":"batterymanager",
                 "feature":"data.webplatform.org/feature/api/battery/batterymanager",
                 "url":"http://test.csswg.org/suites/css2.1/20110323/html4/chapter-4.html"
