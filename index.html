@@ -7,9 +7,9 @@
     <script class="remove">
       var respecConfig = {
           // specification status (e.g. WD, LCWD, NOTE, etc.). If in doubt use ED.
-          specStatus:           "unofficial"
+          specStatus:         "unofficial"
 
-          , shortName:            "ua-testing-data-model"
+          , shortName:        "browser-compat-model"
 
           // editors, add as many as you like
           // only "name" is required
@@ -21,6 +21,7 @@
               ,   companyURL: "http://w3.org/"
               }
           ]
+          , issueBase: "https://github.com/webplatform/browser-compat-model/issues/"
           , format: "markdown"
       };
     </script>
@@ -45,11 +46,11 @@
   Defining a data model is tricky because different data sources have vastly
   different types of data. Some of this data is very much factual. For example,
   User Agent with UA string `uas` gets a score of `X` out of `Y` running the
-  test suite `T` for spec `S` on date `t0`. Let's call this raw data. While this
+  test suite `T` for spec `S` on date `t0`. Let's call this *raw data*. While this
   data is pretty much non-controversial, it is also not very valuable to the
   end-developer. Interpreting this data to conclude that User Agent `A` supports
-  feature `F` is where the real value lies. Let's call this interpreted data.
-  
+  feature `F` is where the real value lies. Let's call this *interpreted data*.
+
   Ideally, we'd always be storing raw data. Unfortunately, that is not always
   possible. The challenge therefore consists in devising data models and
   transformation strategies which allow both raw and interpreted data to
@@ -67,7 +68,7 @@ User Agent data models
 ### Reference User Agent Parser
 
 Precisely identifying User Agents is a tricky business as camouflaging their true
-identity and impersonating others have been among User Agent's
+identity and impersonating others has been among User Agent's
 [earliest survival techniques](http://webaim.org/blog/user-agent-string-history/).
 
 Despite it's flaws, User Agent String parsing remains the best technique to
@@ -75,22 +76,20 @@ identify browsers for analytics or testing purposes.
 
 Properly parsing a User Agent string is a dirty job and not one that could be
 specified easily. With specifying a UA parsing algorithm out of the question, our
-second best bet is to standardize on <dfn>reference UA parser</dfn> that fits our licensing
-requirements and doesn't tie us to one programming language:
+second best bet is to standardize on <dfn>reference UA parser</dfn> that fits our licensing requirements and doesn't tie us to one programming language:
 [`ua-parser`](https://github.com/tobie/ua-parser), the open-source parser extracted
 from the [Browserscope](http://www.browserscope.org/) project. It has
 [liberal licensing](https://github.com/tobie/ua-parser#license) and is polyglot by
 nature: the core of the parser is a
 [list of regexes](https://github.com/tobie/ua-parser/blob/master/regexes.yaml) which
 can be used to implement the parser in any language that supports regular expressions
-and is able to consume [[YAML]] (disclaimer, the editor of this document is also `ua-parser`'s
-co-maintainer). Currently, implementations exist in: C#, D, Go, Haskell, Java,
-JavaScript (node.js), Perl, PHP, Pig, Python, and Ruby.
+and is able to consume [[YAML]] (disclaimer, the editor of this document is also `ua-parser`'s co-maintainer).
+Currently, implementations exist in: C#, D, Go, Haskell, Java, JavaScript (node.js), Perl, PHP, Pig, Python, and Ruby.
 
 ### Incomplete Version Strings in <a>UserAgentInfo</a> and <a>OperatingSystemInfo</a>
 
 <p class="issue">How do we handle incomplete version strings?
-  
+
 Consider `uainfo`,  an instance of <a>UserAgentInfo</a>. Its `family` attribute is `"Foo"`;
 its `major` attribute, `"8"`; and its `minor` and `patch` attributes are both `null`. For
 the sake of argument, imagine we represent this User Agent as the string "Foo 8".
@@ -170,7 +169,7 @@ If the value of the `minor` attribute is `null`, the value of the `patch` attrib
 
 ### The <a>OperatingSystemInfo</a> object
 
-If the value of the `family` attribute is `"Other"`, the value of the `major, `minor`, `patch` and `minorPatch` attributes MUST be `null`.
+If the value of the `family` attribute is `"Other"`, the value of the `major`, `minor`, `patch` and `minorPatch` attributes MUST be `null`.
 
 If the value of the `major` attribute is `null`, the value of the `minor`, `patch` and `minorPatch` attributes MUST be `null`.
 
